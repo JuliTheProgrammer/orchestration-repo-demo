@@ -4,6 +4,8 @@ namespace App\Native;
 
 use App\Models\Note;
 use Illuminate\View\View;
+use Native\Mobile\Edge\Layouts\Builders\NavAction;
+use Native\Mobile\Edge\Layouts\Builders\NavBarOptions;
 use Native\Mobile\Edge\NativeComponent;
 
 class NoteFormScreen extends NativeComponent
@@ -30,6 +32,12 @@ class NoteFormScreen extends NativeComponent
     public function navTitle(): string
     {
         return $this->noteId ? 'Edit note' : 'New note';
+    }
+
+    public function navigationOptions(): ?NavBarOptions
+    {
+        return NavBarOptions::make()
+            ->action(NavAction::make('save')->icon('check')->a11yLabel('Save')->press('save'));
     }
 
     public function updateTitle(string $value): void

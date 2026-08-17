@@ -1,13 +1,4 @@
 <column class="w-full h-full bg-theme-background safe-area">
-    <row class="w-full px-4 py-3 items-center justify-between">
-        <text class="text-[20] font-bold text-theme-on-surface">Notes</text>
-        <column @press="navigate('/app/notes/create')" class="w-[32] h-[32] items-center justify-center">
-            <icon name="add" :size="24" />
-        </column>
-    </row>
-
-    <divider class="w-full" />
-
     <scroll-view class="w-full h-full">
         <column class="w-full gap-0">
             @forelse ($notes as $note)
