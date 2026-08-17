@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\NoteController;
+use App\Native\WebViewScreen;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::native('/home', WebViewScreen::class);
+
+Route::redirect('/', '/notes');
+
+Route::resource('notes', NoteController::class);
