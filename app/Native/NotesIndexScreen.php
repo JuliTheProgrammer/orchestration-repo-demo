@@ -16,6 +16,11 @@ class NotesIndexScreen extends NativeComponent
         $this->loadNotes();
     }
 
+    public function onResume(): void
+    {
+        $this->loadNotes();
+    }
+
     public function loadNotes(): void
     {
         $this->notes = Note::latest()->get(['id', 'title', 'body'])->toArray();
