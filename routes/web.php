@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\NoteController;
-use App\Native\WebViewScreen;
+use App\Native\NoteFormScreen;
+use App\Native\NotesIndexScreen;
 use Illuminate\Support\Facades\Route;
 
-Route::native('/home', WebViewScreen::class);
+Route::native('/app/notes', NotesIndexScreen::class);
+Route::native('/app/notes/create', NoteFormScreen::class);
+Route::native('/app/notes/{id}', NoteFormScreen::class);
 
 Route::redirect('/', '/notes');
 

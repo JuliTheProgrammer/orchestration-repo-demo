@@ -8,11 +8,18 @@
         "framework"
     ],
     "license": "MIT",
+    "repositories": {
+        "ui": {
+            "type": "vcs",
+            "url": "https://github.com/nativephp/native-ui"
+        }
+    },
     "require": {
         "php": "^8.3",
         "laravel/framework": "^13.17",
         "laravel/tinker": "^3.0",
-        "nativephp/mobile": "^4.2"
+        "nativephp/mobile": "^4.2",
+        "nativephp/mobile-ui": "dev-main"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
