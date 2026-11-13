@@ -54,13 +54,15 @@ it('persists notes to the database', function () {
     $this->assertDatabaseHas('notes', ['title' => 'Saved', 'body' => 'Body']);
 });
 
-it('increments reactions on a note', function () {
+it('counts each reaction type on a note', function () {
     $note = Note::factory()->create();
 
-    $note->react();
-    $note->react();
+    $note->react('👍');
+    $note->react('👍');
+    $note->react('🎉');
+    $note->react('invalid');
 
-    expect($note->fresh()->reactions)->toBe(2);
+    expect($note->fresh()->reactions)->toBe(['👍' => 2, '🎉' => 1]);
 });
 
 it('removes a deleted note from the database', function () {

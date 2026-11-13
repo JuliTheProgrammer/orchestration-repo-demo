@@ -10,11 +10,15 @@ use Native\Mobile\Edge\NativeComponent;
 
 class NotesIndexScreen extends NativeComponent
 {
-    /** @var array<int, array{id: int, title: string, body: string, reactions: int}> */
+    /** @var array<int, array{id: int, title: string, body: string, reactions: array<string, int>|null}> */
     private array $allNotes = [];
 
-    /** @var array<int, array{id: int, title: string, body: string, reactions: int}> */
+    /** @var array<int, array{id: int, title: string, body: string, reactions: array<string, int>|null}> */
     public array $notes = [];
+
+    public ?int $lastReactedNoteId = null;
+
+    public ?string $lastReactedEmoji = null;
 
     public function mount(): void
     {
@@ -54,9 +58,12 @@ class NotesIndexScreen extends NativeComponent
         $this->navigate('/app/notes/create');
     }
 
-    public function reactToNote(int $id): void
+    public function reactToNote(int $id, string $emoji): void
     {
-        Note::findOrFail($id)->react();
+        Note::findOrFail($id)->react($emoji);
+
+        $this->lastReactedNoteId = $id;
+        $this->lastReactedEmoji = $emoji;
 
         $this->loadNotes();
     }
