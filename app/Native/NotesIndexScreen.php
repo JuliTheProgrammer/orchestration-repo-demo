@@ -50,7 +50,13 @@ class NotesIndexScreen extends NativeComponent
     {
         return NavBarOptions::make()
             ->searchBar('Search notes...', 'searchNotes')
-            ->action(NavAction::make('add')->icon('add')->a11yLabel('New note')->press('createNote'));
+            ->action(NavAction::make('add')->icon('add')->a11yLabel('New note')->press('createNote'))
+            ->action(NavAction::make('feedback')->icon('mail')->a11yLabel('Send feedback')->press('openFeedback'));
+    }
+
+    public function openFeedback(): void
+    {
+        $this->navigate('/app/feedback');
     }
 
     public function createNote(): void
