@@ -3,6 +3,7 @@
 namespace App\Native;
 
 use App\Models\Note;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Native\Mobile\Edge\Layouts\Builders\NavAction;
 use Native\Mobile\Edge\Layouts\Builders\NavBarOptions;
@@ -50,7 +51,18 @@ class NotesIndexScreen extends NativeComponent
     {
         return NavBarOptions::make()
             ->searchBar('Search notes...', 'searchNotes')
-            ->action(NavAction::make('add')->icon('add')->a11yLabel('New note')->press('createNote'));
+            ->action(NavAction::make('add')->icon('add')->a11yLabel('New note')->press('createNote'))
+            ->action(NavAction::make('logout')->icon('logout')->a11yLabel('Log out')->press('logout'));
+    }
+
+    public function logout(): void
+    {
+        Auth::logout();
+
+        session()->invalidate();
+        session()->regenerateToken();
+
+        $this->navigate('/app/notes');
     }
 
     public function createNote(): void
