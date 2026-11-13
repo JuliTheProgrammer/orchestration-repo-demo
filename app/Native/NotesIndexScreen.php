@@ -10,10 +10,10 @@ use Native\Mobile\Edge\NativeComponent;
 
 class NotesIndexScreen extends NativeComponent
 {
-    /** @var array<int, array{id: int, title: string, body: string}> */
+    /** @var array<int, array{id: int, title: string, body: string, reactions: int}> */
     private array $allNotes = [];
 
-    /** @var array<int, array{id: int, title: string, body: string}> */
+    /** @var array<int, array{id: int, title: string, body: string, reactions: int}> */
     public array $notes = [];
 
     public function mount(): void
@@ -28,7 +28,7 @@ class NotesIndexScreen extends NativeComponent
 
     public function loadNotes(): void
     {
-        $this->allNotes = Note::latest()->get(['id', 'title', 'body'])->toArray();
+        $this->allNotes = Note::latest()->get(['id', 'title', 'body', 'reactions'])->toArray();
         $this->notes = $this->allNotes;
     }
 
@@ -52,6 +52,13 @@ class NotesIndexScreen extends NativeComponent
     public function createNote(): void
     {
         $this->navigate('/app/notes/create');
+    }
+
+    public function reactToNote(int $id): void
+    {
+        Note::findOrFail($id)->react();
+
+        $this->loadNotes();
     }
 
     public function searchNotes(string $query): void

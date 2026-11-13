@@ -12,4 +12,9 @@ class Note extends Model
     use HasFactory;
 
     protected $fillable = ['title', 'body'];
+
+    public function react(): void
+    {
+        $this->increment('reactions');
+    }
 }

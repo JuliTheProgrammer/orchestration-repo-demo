@@ -6,6 +6,7 @@
                     <text class="text-[16] font-bold text-theme-on-surface">{{ $note['title'] }}</text>
                     <text class="text-[13] text-theme-on-surface-variant" :maxLines="1">{{ $note['body'] }}</text>
                 </column>
+                <text @press="reactToNote({{ $note['id'] }})" class="px-4 pb-3 text-[13] text-theme-on-surface-variant">👍 {{ $note['reactions'] }}</text>
                 <divider class="w-full" />
             @empty
                 <column class="w-full items-center py-12 gap-2">

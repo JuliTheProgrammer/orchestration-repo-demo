@@ -54,6 +54,15 @@ it('persists notes to the database', function () {
     $this->assertDatabaseHas('notes', ['title' => 'Saved', 'body' => 'Body']);
 });
 
+it('increments reactions on a note', function () {
+    $note = Note::factory()->create();
+
+    $note->react();
+    $note->react();
+
+    expect($note->fresh()->reactions)->toBe(2);
+});
+
 it('removes a deleted note from the database', function () {
     $note = Note::factory()->create();
     $note->delete();
