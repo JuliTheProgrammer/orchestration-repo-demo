@@ -71,3 +71,11 @@ it('removes a deleted note from the database', function () {
 
     $this->assertDatabaseMissing('notes', ['id' => $note->id]);
 });
+
+it('logs the user out from the notes screen', function () {
+    $this->actingAs(App\Models\User::factory()->create());
+
+    (new App\Native\NotesIndexScreen)->logout();
+
+    $this->assertGuest();
+});
