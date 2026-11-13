@@ -1,6 +1,9 @@
 <column class="w-full h-full bg-theme-background safe-area">
     <scroll-view class="w-full h-full">
         <column class="w-full px-4 pt-4 gap-3">
+            <row class="w-full items-center justify-center">
+                <image src="/logo.svg" class="w-16 h-16" />
+            </row>
             @forelse ($notes as $note)
                 <column class="w-full rounded-2xl bg-theme-surface-variant p-4 gap-2">
                     <column @press="navigate('/app/notes/{{ $note['id'] }}')" class="w-full gap-1">
