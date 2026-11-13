@@ -6,6 +6,11 @@
                     <text class="text-[16] font-bold text-theme-on-surface">{{ $note['title'] }}</text>
                     <text class="text-[13] text-theme-on-surface-variant" :maxLines="1">{{ $note['body'] }}</text>
                 </column>
+                <row class="px-4 pb-3 gap-4">
+                    @foreach (\App\Models\Note::REACTIONS as $emoji)
+                        <text @press="reactToNote({{ $note['id'] }}, '{{ $emoji }}')" class="{{ $lastReactedNoteId === $note['id'] && $lastReactedEmoji === $emoji ? 'text-[22] font-bold' : 'text-[13]' }} text-theme-on-surface-variant">{{ $emoji }} {{ $note['reactions'][$emoji] ?? 0 }}</text>
+                    @endforeach
+                </row>
                 <divider class="w-full" />
             @empty
                 <column class="w-full items-center py-12 gap-2">

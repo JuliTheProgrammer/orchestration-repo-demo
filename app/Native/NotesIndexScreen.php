@@ -10,11 +10,15 @@ use Native\Mobile\Edge\NativeComponent;
 
 class NotesIndexScreen extends NativeComponent
 {
-    /** @var array<int, array{id: int, title: string, body: string}> */
+    /** @var array<int, array{id: int, title: string, body: string, reactions: array<string, int>|null}> */
     private array $allNotes = [];
 
-    /** @var array<int, array{id: int, title: string, body: string}> */
+    /** @var array<int, array{id: int, title: string, body: string, reactions: array<string, int>|null}> */
     public array $notes = [];
+
+    public ?int $lastReactedNoteId = null;
+
+    public ?string $lastReactedEmoji = null;
 
     public function mount(): void
     {
@@ -28,7 +32,7 @@ class NotesIndexScreen extends NativeComponent
 
     public function loadNotes(): void
     {
-        $this->allNotes = Note::latest()->get(['id', 'title', 'body'])->toArray();
+        $this->allNotes = Note::latest()->get(['id', 'title', 'body', 'reactions'])->toArray();
         $this->notes = $this->allNotes;
     }
 
@@ -52,6 +56,16 @@ class NotesIndexScreen extends NativeComponent
     public function createNote(): void
     {
         $this->navigate('/app/notes/create');
+    }
+
+    public function reactToNote(int $id, string $emoji): void
+    {
+        Note::findOrFail($id)->react($emoji);
+
+        $this->lastReactedNoteId = $id;
+        $this->lastReactedEmoji = $emoji;
+
+        $this->loadNotes();
     }
 
     public function searchNotes(string $query): void
