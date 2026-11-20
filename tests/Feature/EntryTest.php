@@ -1,6 +1,9 @@
 <?php
 
 use App\Models\Entry;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(RefreshDatabase::class);
 
 it('creates an entry via the factory', function () {
     $entry = Entry::factory()->create();
