@@ -52,7 +52,8 @@ class NotesIndexScreen extends NativeComponent
         $options = NavBarOptions::make()
             ->searchBar('Search notes...', 'searchNotes')
             ->action(NavAction::make('add')->icon('add')->a11yLabel('New note')->press('createNote'))
-            ->action(NavAction::make('feedback')->icon('mail')->a11yLabel('Send feedback')->press('openFeedback'));
+            ->action(NavAction::make('feedback')->icon('mail')->a11yLabel('Send feedback')->press('openFeedback'))
+            ->action(NavAction::make('posts')->icon('list')->a11yLabel('Posts')->press('openPosts'));
 
         if (app(StatefulGuard::class)->check()) {
             return $options->action(NavAction::make('logout')->icon('logout')->a11yLabel('Log out')->press('logout'));
@@ -79,6 +80,11 @@ class NotesIndexScreen extends NativeComponent
     public function openFeedback(): void
     {
         $this->navigate('/app/feedback');
+    }
+
+    public function openPosts(): void
+    {
+        $this->navigate('/app/posts');
     }
 
     public function createNote(): void
