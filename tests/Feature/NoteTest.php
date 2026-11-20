@@ -65,6 +65,42 @@ it('counts each reaction type on a note', function () {
     expect($note->fresh()->reactions)->toBe(['👍' => 2, '🎉' => 1]);
 });
 
+it('persists reactions through mass assignment', function () {
+    $note = Note::factory()->create();
+
+    $note->update(['reactions' => ['👍' => 1]]);
+
+    expect($note->fresh()->reactions)->toBe(['👍' => 1]);
+});
+
+it('stores a single reaction on a fresh note', function () {
+    $note = Note::factory()->create();
+
+    $note->react('👍');
+
+    expect($note->fresh()->reactions)->toBe(['👍' => 1]);
+});
+
+it('ignores an invalid reaction without throwing', function () {
+    $note = Note::factory()->create();
+
+    $note->react('invalid');
+
+    expect($note->fresh()->reactions)->toBeNull();
+});
+
+it('reacts to a note from the notes index screen', function () {
+    $note = Note::factory()->create();
+    $screen = new App\Native\NotesIndexScreen();
+
+    $screen->reactToNote($note->id, '👍');
+
+    expect($note->fresh()->reactions)->toBe(['👍' => 1])
+        ->and($screen->lastReactedNoteId)->toBe($note->id)
+        ->and($screen->lastReactedEmoji)->toBe('👍')
+        ->and($screen->notes[0]['reactions'])->toBe(['👍' => 1]);
+});
+
 it('removes a deleted note from the database', function () {
     $note = Note::factory()->create();
     $note->delete();
