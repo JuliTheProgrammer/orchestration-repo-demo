@@ -40,6 +40,10 @@ class FeedbackScreen extends NativeComponent
             $mail->to(config('services.feedback.to'))->subject('App feedback');
         });
 
+        activity('feedback')
+            ->causedBy(auth()->user())
+            ->log('feedback sent');
+
         $this->back();
     }
 

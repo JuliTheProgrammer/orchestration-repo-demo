@@ -5,11 +5,13 @@ namespace App\Models;
 use Database\Factories\NoteFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 class Note extends Model
 {
     /** @use HasFactory<NoteFactory> */
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $fillable = ['title', 'body', 'reactions'];
 
@@ -34,5 +36,13 @@ class Note extends Model
         $reactions[$emoji] = ($reactions[$emoji] ?? 0) + 1;
 
         $this->update(['reactions' => $reactions]);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['title', 'body', 'reactions'])
+            ->logOnlyDirty()
+            ->dontLogEmptyChanges();
     }
 }
