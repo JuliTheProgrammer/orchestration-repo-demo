@@ -5,4 +5,5 @@
         <button label="Log in" @press="login" :fontSize="14" />
         <button label="Create an account" @press="openRegister" :fontSize="14" />
     </column>
+    @include('native.partials.footer')
 </column>

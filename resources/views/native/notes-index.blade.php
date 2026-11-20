@@ -20,4 +20,5 @@
             @endforelse
         </column>
     </scroll-view>
+    @include('native.partials.footer')
 </column>
