@@ -3,6 +3,7 @@
 namespace App\Native;
 
 use App\Models\Note;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\View\View;
 use Native\Mobile\Edge\Layouts\Builders\NavAction;
 use Native\Mobile\Edge\Layouts\Builders\NavBarOptions;
@@ -48,10 +49,31 @@ class NotesIndexScreen extends NativeComponent
 
     public function navigationOptions(): ?NavBarOptions
     {
-        return NavBarOptions::make()
+        $options = NavBarOptions::make()
             ->searchBar('Search notes...', 'searchNotes')
             ->action(NavAction::make('add')->icon('add')->a11yLabel('New note')->press('createNote'))
             ->action(NavAction::make('feedback')->icon('mail')->a11yLabel('Send feedback')->press('openFeedback'));
+
+        if (app(StatefulGuard::class)->check()) {
+            return $options->action(NavAction::make('logout')->icon('logout')->a11yLabel('Log out')->press('logout'));
+        }
+
+        return $options->action(NavAction::make('login')->icon('person')->a11yLabel('Log in')->press('openLogin'));
+    }
+
+    public function openLogin(): void
+    {
+        $this->navigate('/app/login');
+    }
+
+    public function logout(): void
+    {
+        app(StatefulGuard::class)->logout();
+
+        if (request()->hasSession()) {
+            request()->session()->invalidate();
+            request()->session()->regenerateToken();
+        }
     }
 
     public function openFeedback(): void
