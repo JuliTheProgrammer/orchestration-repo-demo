@@ -6,6 +6,8 @@ dataset('native views', [
     'feedback' => ['feedback', ['message' => '']],
     'login' => ['login', ['email' => '', 'password' => '']],
     'register' => ['register', ['name' => '', 'email' => '', 'password' => '', 'password_confirmation' => '']],
+    'posts-index' => ['posts-index', ['posts' => []]],
+    'post-form' => ['post-form', ['postId' => null, 'title' => '', 'body' => '']],
 ]);
 
 it('renders the copyright footer on the native view', function (string $view, array $data) {
