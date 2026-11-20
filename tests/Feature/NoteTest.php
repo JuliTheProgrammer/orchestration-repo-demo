@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Note;
+use App\Native\NotesIndexScreen;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -64,6 +65,44 @@ it('counts each reaction type on a note', function () {
 
     expect($note->fresh()->reactions)->toBe(['👍' => 2, '🎉' => 1]);
 });
+
+it('increments a reaction each time it is added', function () {
+    $note = Note::factory()->create();
+
+    $note->react('👍');
+    $note->react('👍');
+
+    expect($note->fresh()->reactions)->toBe(['👍' => 2]);
+});
+
+it('ignores unknown emoji reactions', function () {
+    $note = Note::factory()->create();
+
+    $note->react('invalid');
+
+    expect($note->fresh()->reactions)->toBeNull();
+});
+
+it('stores a reaction and reloads notes from the screen', function () {
+    $note = Note::factory()->create();
+    $screen = new NotesIndexScreen;
+    $screen->loadNotes();
+
+    $screen->reactToNote($note->id, '❤️');
+
+    expect($note->fresh()->reactions)->toBe(['❤️' => 1])
+        ->and($screen->notes[0]['reactions'])->toBe(['❤️' => 1])
+        ->and($screen->lastReactedNoteId)->toBe($note->id);
+})->skip(fn () => ! class_exists(\Native\Mobile\Edge\NativeComponent::class), 'NativePHP mobile package not available');
+
+it('does not crash when reacting to an unknown note id', function () {
+    $screen = new NotesIndexScreen;
+
+    $screen->reactToNote(999, '👍');
+
+    expect($screen->lastReactedNoteId)->toBeNull()
+        ->and(Note::count())->toBe(0);
+})->skip(fn () => ! class_exists(\Native\Mobile\Edge\NativeComponent::class), 'NativePHP mobile package not available');
 
 it('removes a deleted note from the database', function () {
     $note = Note::factory()->create();

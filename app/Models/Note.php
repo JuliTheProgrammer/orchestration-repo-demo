@@ -33,6 +33,6 @@ class Note extends Model
         $reactions = $this->reactions ?? [];
         $reactions[$emoji] = ($reactions[$emoji] ?? 0) + 1;
 
-        $this->update(['reactions' => $reactions]);
+        $this->forceFill(['reactions' => $reactions])->save();
     }
 }

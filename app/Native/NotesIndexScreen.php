@@ -66,7 +66,13 @@ class NotesIndexScreen extends NativeComponent
 
     public function reactToNote(int $id, string $emoji): void
     {
-        Note::findOrFail($id)->react($emoji);
+        $note = Note::find($id);
+
+        if ($note === null) {
+            return;
+        }
+
+        $note->react($emoji);
 
         $this->lastReactedNoteId = $id;
         $this->lastReactedEmoji = $emoji;
