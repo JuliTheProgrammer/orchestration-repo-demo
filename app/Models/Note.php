@@ -11,7 +11,7 @@ class Note extends Model
     /** @use HasFactory<NoteFactory> */
     use HasFactory;
 
-    protected $fillable = ['title', 'body'];
+    protected $fillable = ['title', 'body', 'reactions'];
 
     /** @var array<int, string> */
     public const REACTIONS = ['👍', '❤️', '😂', '🎉', '😮', '😢'];

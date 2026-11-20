@@ -65,6 +65,15 @@ it('counts each reaction type on a note', function () {
     expect($note->fresh()->reactions)->toBe(['👍' => 2, '🎉' => 1]);
 });
 
+it('persists reactions when reacting to a note loaded from the database', function () {
+    $note = Note::factory()->create();
+
+    Note::findOrFail($note->id)->react('❤️');
+
+    $this->assertDatabaseHas('notes', ['id' => $note->id]);
+    expect(Note::findOrFail($note->id)->reactions)->toBe(['❤️' => 1]);
+});
+
 it('removes a deleted note from the database', function () {
     $note = Note::factory()->create();
     $note->delete();
