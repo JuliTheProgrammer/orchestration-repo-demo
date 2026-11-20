@@ -7,4 +7,5 @@
             <button label="Delete" @press="delete" color="#DC2626" labelColor="#FFFFFF" :fontSize="14" />
         @endif
     </column>
+    @include('native.partials.footer')
 </column>

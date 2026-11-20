@@ -6,4 +6,5 @@
         <outlined-text-input value="{{ $password_confirmation }}" placeholder="Confirm password" :secure="true" @change="updatePasswordConfirmation" />
         <button label="Create account" @press="register" :fontSize="14" />
     </column>
+    @include('native.partials.footer')
 </column>
